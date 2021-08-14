@@ -21,7 +21,7 @@ const controlRecipes = async function () {
     // 2. RENDER RECIPE
     recipeView.render(model.state.recipe);
   } catch (err) {
-    console.error(err.message);
+    recipeView.renderError();
   }
 };
 // controlRecipes();
@@ -30,7 +30,11 @@ const controlRecipes = async function () {
 // Event Listeners
 /////////////////////////////////////////////////////////////////
 
-// Change of Hash ID in the url & New page load events
+// Use the Publisher-Subscriber pattern as shown in Slide 249 in Theory Lectures PDF
+const init = function () {
+  recipeView.addHandlerRender(controlRecipes);
+};
+// init();
 ['hashchange', 'load'].forEach((event) =>
   window.addEventListener(event, controlRecipes)
 );

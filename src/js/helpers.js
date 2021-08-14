@@ -1,6 +1,6 @@
 // Use this file (module) to include functions that we will use multiple times across the project
 import { async } from 'regenerator-runtime';
-import { TIMEOUT_SEC } from './helpers.js';
+import { TIMEOUT_SEC } from './config.js';
 
 const timeout = function (s) {
   return new Promise(function (_, reject) {
@@ -13,6 +13,7 @@ const timeout = function (s) {
 export const getJSON = async function (url) {
   try {
     const res = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]); // returns a promise
+
     const data = await res.json(); // returns a promise
     // console.log(res, data);
 

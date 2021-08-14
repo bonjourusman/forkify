@@ -11,12 +11,13 @@ import { Fraction } from 'fractional';
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
   #data;
+  #errorMessage = 'We could not find that recipe. Please try another one!';
 
   #clear() {
     this.#parentElement.innerHTML = '';
   }
 
-  renderSpinner = function () {
+  renderSpinner() {
     const markup = `
           <div class="spinner">
             <svg>
@@ -26,7 +27,21 @@ class RecipeView {
           `;
     this.#clear(); // clear default text from parent element
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
-  };
+  }
+
+  renderError(message = this.#errorMessage) {
+    const markup = `
+        <div class="error">
+            <div>
+              <svg>
+                <use href="${icons}#icon-alert-triangle"></use>
+              </svg>
+            </div>
+            <p>${message}</p>
+        </div>`;
+    this.#clear();
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
 
   render(data) {
     this.#data = data;
@@ -136,6 +151,14 @@ class RecipeView {
             </div>
         </li>
             `;
+  }
+
+  // This is a Publisher (function) that receives a Subscriber (function) as its input argument; we are adding a handler function to render the recipe.
+  addHandlerRender(handler) {
+    // Change of Hash ID in the url & New page load events
+    ['hashchange', 'load'].forEach((event) =>
+      window.addEventListener(event, handler)
+    );
   }
 }
 
