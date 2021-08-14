@@ -1,19 +1,22 @@
 import { async } from 'regenerator-runtime';
+import { API_URL } from './config.js';
+import { getJSON } from './helpers.js';
 
 export const state = {
   recipe: {},
 };
 
+/////////////////////////////////////////////////////////////////
+// Load a Recipe from API
+/////////////////////////////////////////////////////////////////
+
+// Jonas' API - Review documentation:
+// URL https://forkify-api.herokuapp.com/v2
+
 export const loadRecipe = async function (id) {
   try {
-    const res = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/${id.slice(1)}`
-    ); // returns a promise
-    const data = await res.json(); // returns a promise
-    // console.log(res, data);
-
-    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
-
+    const data = await getJSON(`${API_URL}/${id}`); // as getJSON() is an async function, it will return a promise. Thus, we need to add 'await'
+    console.log(data);
     const { recipe } = data.data;
 
     state.recipe = {
@@ -30,6 +33,7 @@ export const loadRecipe = async function (id) {
 
     console.log(state.recipe);
   } catch (err) {
-    console.err(err);
+    // Temp error handling
+    console.error(`${err} 💥 💥 💥`);
   }
 };

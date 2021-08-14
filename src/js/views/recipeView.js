@@ -3,20 +3,17 @@
 import icons from 'url:../../img/icons.svg'; // Parcel v.2
 // console.log(icons); // This will be the modified link created by parcel
 
+// Reformat decimals to fractions
+import { Fraction } from 'fractional';
+// Documentation URL: www.npmjs.com/package/fractional
+
 // Creating a class for this view so later we can have a parent class called View which will have a few methods that all its children will inherit.
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
   #data;
 
-  render(data) {
-    this.#data = data;
-    const markup = this.#generateMarkup();
-    this.#clear;
-    this.#parentElement.insertAdjacentHTML('afterbegin', markup); // Insert HTML to DOM (add to parent element class: recipe)
-  }
-
   #clear() {
-    this.#parentElement.innerHTML = ''; // Clear Default Text
+    this.#parentElement.innerHTML = '';
   }
 
   renderSpinner = function () {
@@ -27,9 +24,16 @@ class RecipeView {
             </svg>
           </div>
           `;
-    this.#parentElement.innerHTML = '';
+    this.#clear(); // clear default text from parent element
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   };
+
+  render(data) {
+    this.#data = data;
+    const markup = this.#generateMarkup();
+    this.#clear(); // clear spinner from parent element
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup); // Insert HTML to DOM (add to parent element class: recipe)
+  }
 
   #generateMarkup() {
     return `
@@ -90,20 +94,7 @@ class RecipeView {
             <h2 class="heading--2">Recipe ingredients</h2>
             <ul class="recipe__ingredient-list">
             ${this.#data.ingredients
-              .map((ing) => {
-                return `
-                <li class="recipe__ingredient">
-                    <svg class="recipe__icon">
-                        <use href="src/img/icons.svg#icon-check"></use>
-                    </svg>
-                    <div class="recipe__quantity">${ing.quantity}</div>
-                    <div class="recipe__description">
-                        <span class="recipe__unit">${ing.unit}</span>
-                        ${ing.description}
-                    </div>
-                </li>
-                    `;
-              })
+              .map(this.#generateMarkupIngredient)
               .join('')}
         </div>
         
@@ -123,12 +114,33 @@ class RecipeView {
             >
             <span>Directions</span>
             <svg class="search__icon">
-                <use href="src/img/icons.svg#icon-arrow-right"></use>
+                <use href="${icons}#icon-arrow-right"></use>
             </svg>
             </a>
         </div>
         `;
   }
+
+  #generateMarkupIngredient(ing) {
+    return `
+        <li class="recipe__ingredient">
+            <svg class="recipe__icon">
+                <use href="${icons}#icon-check"></use>
+            </svg>
+            <div class="recipe__quantity">${
+              ing.quantity ? new Fraction(ing.quantity).toString() : ''
+            }</div>
+            <div class="recipe__description">
+                <span class="recipe__unit">${ing.unit}</span>
+                ${ing.description}
+            </div>
+        </li>
+            `;
+  }
 }
 
 export default new RecipeView(); // not passing any data to this class, so construction function is not required.
+
+/////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////

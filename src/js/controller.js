@@ -7,23 +7,6 @@ import recipeView from './views/recipeView.js';
 import 'core-js/stable';
 import 'regenerator-runtime';
 
-const recipeContainer = document.querySelector('.recipe');
-
-const timeout = function (s) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request took too long! Timeout after ${s} second`));
-    }, s * 1000);
-  });
-};
-
-/////////////////////////////////////////////////////////////////
-// Loading a Recipe from API
-/////////////////////////////////////////////////////////////////
-
-// Jonas' API - Review documentation:
-// URL https://forkify-api.herokuapp.com/v2
-
 const controlRecipes = async function () {
   // using async function for non-blocking code execution
   try {
@@ -33,7 +16,7 @@ const controlRecipes = async function () {
     recipeView.renderSpinner();
 
     // 1. LOAD RECIPE
-    await model.loadRecipe(id); // as this is an async function, it will return a promise.
+    await model.loadRecipe(id); // as loadRecipe() is an async function, it will return a promise. Thus, we need to add 'await'
 
     // 2. RENDER RECIPE
     recipeView.render(model.state.recipe);
