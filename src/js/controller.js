@@ -16,7 +16,7 @@ const controlRecipes = async function () {
     recipeView.renderSpinner();
 
     // 1. LOAD RECIPE
-    await model.loadRecipe(id); // as loadRecipe() is an async function, it will return a promise. Thus, we need to add 'await'
+    await model.loadRecipe(id.slice(1)); // as loadRecipe() is an async function, it will return a promise. Thus, we need to add 'await'
 
     // 2. RENDER RECIPE
     recipeView.render(model.state.recipe);
@@ -34,10 +34,7 @@ const controlRecipes = async function () {
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
 };
-// init();
-['hashchange', 'load'].forEach((event) =>
-  window.addEventListener(event, controlRecipes)
-);
+init();
 
 /////////////////////////////////////////////////////////////////
 //
