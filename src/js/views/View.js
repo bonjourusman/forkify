@@ -20,8 +20,19 @@ export default class View {
             </svg>
           </div>
           `;
-    this._clear(); // clear default text from parent element
+    this._clear(); // clear default or prior content from parent element
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
+
+  render(data) {
+    // Return an Error if data is undefined (no data) or if data array is empty
+    if (!data || (Array.isArray(data) && data.length === 0))
+      return this.renderError();
+
+    this._data = data;
+    const markup = this._generateMarkup();
+    this._clear(); // clear spinner or prior content from parent element
+    this._parentElement.insertAdjacentHTML('afterbegin', markup); // Insert HTML to DOM (add to parent element class: recipe)
   }
 
   renderError(message = this._errorMessage) {
@@ -50,16 +61,5 @@ export default class View {
         </div>`;
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
-
-  render(data) {
-    // Return an Error if data is undefined (no data) or if data array is empty
-    if (!data || (Array.isArray(data) && data.length === 0))
-      return this.renderError();
-
-    this._data = data;
-    const markup = this._generateMarkup();
-    this._clear(); // clear spinner from parent element
-    this._parentElement.insertAdjacentHTML('afterbegin', markup); // Insert HTML to DOM (add to parent element class: recipe)
   }
 }
