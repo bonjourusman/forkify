@@ -3,6 +3,10 @@ import { getJSON } from './helpers.js';
 
 export const state = {
   recipe: {},
+  search: {
+    query: '',
+    results: [],
+  },
 };
 
 /////////////////////////////////////////////////////////////////
@@ -16,7 +20,7 @@ export const loadRecipe = async function (id) {
   try {
     const data = await getJSON(`${API_URL}/${id}`); // as getJSON() is an async function, it will return a promise. Thus, we need to add 'await'
 
-    console.log(data);
+    // console.log(data);
     const { recipe } = data.data;
 
     state.recipe = {
@@ -31,9 +35,32 @@ export const loadRecipe = async function (id) {
       ingredients: recipe.ingredients,
     };
 
-    console.log(state.recipe);
+    // console.log(state.recipe);
   } catch (err) {
     // console.error(`${err} 💥 💥 💥`); // Temp error handling
     throw err; // This way the promise returned by this function will get REJECTED, and not show as fulfilled.
+  }
+};
+
+export const loadSearchResults = async function (query) {
+  try {
+    state.search.query = query;
+
+    const data = await getJSON(`${API_URL}?search=${query}`);
+    // console.log(data);
+
+    state.search.results = data.data.recipes.map((recipe) => {
+      return {
+        id: recipe.id,
+        title: recipe.title,
+        publisher: recipe.publisher,
+        image: recipe.image_url,
+      };
+    });
+
+    // console.log(state.search.results);
+  } catch (err) {
+    // console.error(`${err} 💥 💥 💥`);
+    throw err;
   }
 };
