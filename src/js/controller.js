@@ -9,6 +9,11 @@ import resultsView from './views/resultsView.js';
 import 'core-js/stable';
 import 'regenerator-runtime';
 
+// Prevent webpage from reloading (Parcel's feature)
+if (module.hot) {
+  module.hot.accept();
+}
+
 const controlRecipes = async function () {
   // using async function for non-blocking code execution
   try {
@@ -19,7 +24,7 @@ const controlRecipes = async function () {
     // 1. LOAD RECIPE
     recipeView.renderSpinner();
     await model.loadRecipe(id.slice(1)); // as loadRecipe() is an async function, it will return a promise. Thus, we need to add 'await'
-    console.log(model.state.recipe);
+    // console.log(model.state.recipe);
 
     // 2. RENDER RECIPE
     recipeView.render(model.state.recipe);

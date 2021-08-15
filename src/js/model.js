@@ -35,7 +35,7 @@ export const loadRecipe = async function (id) {
       ingredients: recipe.ingredients,
     };
 
-    // console.log(state.recipe);
+    console.log(state.recipe);
   } catch (err) {
     // console.error(`${err} 💥 💥 💥`); // Temp error handling
     throw err; // This way the promise returned by this function will get REJECTED, and not show as fulfilled.
@@ -47,7 +47,7 @@ export const loadSearchResults = async function (query) {
     state.search.query = query;
 
     const data = await getJSON(`${API_URL}?search=${query}`);
-    // console.log(data);
+    console.log(data);
 
     state.search.results = data.data.recipes.map((recipe) => {
       return {

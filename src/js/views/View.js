@@ -53,6 +53,10 @@ export default class View {
   }
 
   render(data) {
+    // Return an Error if data is undefined (no data) or if data array is empty
+    if (!data || (Array.isArray(data) && data.length === 0))
+      return this.renderError();
+
     this._data = data;
     const markup = this._generateMarkup();
     this._clear(); // clear spinner from parent element

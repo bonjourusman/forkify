@@ -23,51 +23,49 @@ class RecipeView extends View {
       this._data.title
     } class="recipe__img" crossorigin/>
             <h1 class="recipe__title">
-            <span>${this._data.title}</span>
+                <span>${this._data.title}</span>
             </h1>
         </figure>
 
         <div class="recipe__details">
             <div class="recipe__info">
-            <svg class="recipe__info-icon">
-                <use href="${icons}#icon-clock"></use>
-            </svg>
-            <span class="recipe__info-data recipe__info-data--minutes">${
-              this._data.cookingTime
-            }</span>
-            <span class="recipe__info-text">minutes</span>
-        </div>
-        
-        <div class="recipe__info">
-            <svg class="recipe__info-icon">
-                <use href="${icons}#icon-users"></use>
-            </svg>
-            <span class="recipe__info-data recipe__info-data--people">4</span>
-            <span class="recipe__info-text">${this._data.servings}</span>
-
-            <div class="recipe__info-buttons">
-                <button class="btn--tiny btn--increase-servings">
-                <svg>
-                    <use href="${icons}#icon-minus-circle"></use>
+                <svg class="recipe__info-icon">
+                    <use href="${icons}#icon-clock"></use>
                 </svg>
-                </button>
-                <button class="btn--tiny btn--increase-servings">
-                <svg>
-                    <use href="${icons}#icon-plus-circle"></use>
-                </svg>
-                </button>
+                <span class="recipe__info-data recipe__info-data--minutes">${
+                  this._data.cookingTime
+                }</span>
+                <span class="recipe__info-text">minutes</span>
             </div>
-        </div>
+            
+            <div class="recipe__info">
+                <svg class="recipe__info-icon">
+                    <use href="${icons}#icon-users"></use>
+                </svg>
+                <span class="recipe__info-data recipe__info-data--people">4</span>
+                <span class="recipe__info-text">${this._data.servings}</span>
 
-        <div class="recipe__user-generated">
-            <svg>
-                <use href="${icons}#icon-user"></use>
-            </svg>
-        </div>
+                <div class="recipe__info-buttons">
+                    <button class="btn--tiny btn--increase-servings">
+                    <svg>
+                        <use href="${icons}#icon-minus-circle"></use>
+                    </svg>
+                    </button>
+                    <button class="btn--tiny btn--increase-servings">
+                    <svg>
+                        <use href="${icons}#icon-plus-circle"></use>
+                    </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="recipe__user-generated">
+            </div>
+            
             <button class="btn--round">
-            <svg class="">
-                <use href="${icons}#icon-bookmark-fill"></use>
-            </svg>
+                <svg class="">
+                    <use href="${icons}#icon-bookmark-fill"></use>
+                </svg>
             </button>
         </div>
 
@@ -83,20 +81,20 @@ class RecipeView extends View {
             <h2 class="heading--2">How to cook it</h2>
             <p class="recipe__directions-text">
             This recipe was carefully designed and tested by
-            <span class="recipe__publisher">${
-              this._data.publisher
-            }</span>. Please check out
-            directions at their website.
+                <span class="recipe__publisher">${
+                  this._data.publisher
+                }</span>. Please check out
+                directions at their website.
             </p>
             <a
             class="btn--small recipe__btn"
             href="${this._data.sourceUrl}"
             target="_blank"
             >
-            <span>Directions</span>
-            <svg class="search__icon">
-                <use href="${icons}#icon-arrow-right"></use>
-            </svg>
+                <span>Directions</span>
+                <svg class="search__icon">
+                    <use href="${icons}#icon-arrow-right"></use>
+                </svg>
             </a>
         </div>
         `;
