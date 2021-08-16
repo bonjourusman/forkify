@@ -4,6 +4,8 @@ import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
 import bookmarksView from './views/bookmarksView.js';
+import addRecipeView from './views/addRecipeView.js';
+import { MODAL_CLOSE_SEC } from './config.js';
 
 // IMPORTANT
 // Add Polyfills for ES6 features via command line:
@@ -104,6 +106,39 @@ const controlBookmarks = function () {
   bookmarksView.render(model.state.bookmarks);
 };
 
+const controlAddRecipe = async function (newRecipe) {
+  // console.log(newRecipe);
+  try {
+    // Show Loading Spinner
+    addRecipeView.renderSpinner();
+
+    // 1. UPLOAD RECIPE DATA
+    await model.uploadRecipe(newRecipe);
+    console.log(model.state.recipe);
+
+    // 2. RENDER RECIPE
+    recipeView.render(model.state.recipe);
+
+    // 3. SUCCESS MESSAGE
+    addRecipeView.renderMessage();
+
+    // 4. RENDER BOOKMARK VIEW
+    bookmarksView.render(model.state.bookmarks);
+
+    // 5. Change ID in the url through History API
+    window.history.pushState(null, '', `#${model.state.recipe.id}`); // change url without reloading the page
+    // window.history.back() // method to go back to last page. FYI.
+
+    // 5. CLOSE FORM WINDOW
+    setTimeout(function () {
+      addRecipeView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000);
+  } catch (err) {
+    console.error('💥', err);
+    addRecipeView.renderError(err.message);
+  }
+};
+
 /////////////////////////////////////////////////////////////////
 // Event Listeners
 /////////////////////////////////////////////////////////////////
@@ -118,5 +153,6 @@ const init = function () {
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  addRecipeView.addHandlerUpload(controlAddRecipe);
 };
 init();
