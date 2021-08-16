@@ -87,7 +87,7 @@ const controlServings = function (newServings) {
   recipeView.update(model.state.recipe); // only update changed text and attributes in DOM without re-rendering the whole view.
 };
 
-const controlBookmark = function () {
+const controlAddBookmark = function () {
   // 1. Add or Remove Bookmark
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   else model.deleteBookmark(model.state.recipe.id);
@@ -100,6 +100,10 @@ const controlBookmark = function () {
   bookmarksView.render(model.state.bookmarks);
 };
 
+const controlBookmarks = function () {
+  bookmarksView.render(model.state.bookmarks);
+};
+
 /////////////////////////////////////////////////////////////////
 // Event Listeners
 /////////////////////////////////////////////////////////////////
@@ -108,40 +112,11 @@ const controlBookmark = function () {
 
 // Subscriber
 const init = function () {
+  bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
-  recipeView.addHandlerAddBookmark(controlBookmark);
+  recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
 };
 init();
-
-/////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////
-
-//
-
-/////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////
-
-//
-
-/////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////
-
-//
-
-/////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////
-
-//
-
-/////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////
-
-//
