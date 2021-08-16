@@ -34,7 +34,7 @@ const controlRecipes = async function () {
     // 3. LOAD RECIPE
     recipeView.renderSpinner();
     await model.loadRecipe(id.slice(1)); // as loadRecipe() is an async function, it will return a promise. Thus, we need to add 'await'
-    // console.log(model.state.recipe);
+    console.log(model.state.recipe);
 
     // 4. RENDER RECIPE
     recipeView.render(model.state.recipe);

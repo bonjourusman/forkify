@@ -4,7 +4,7 @@ import View from './View.js';
 import icons from 'url:../../img/icons.svg'; // Parcel v.2
 
 // Reformat decimals to fractions
-import { Fraction } from 'fractional';
+// import { Fraction } from 'fractional'; // failing on deployment
 // Documentation URL: www.npmjs.com/package/fractional
 
 // Creating a child class that inherits properties and methods from its parent class called View:
@@ -121,7 +121,7 @@ class RecipeView extends View {
             </svg>
             <div class="recipe__quantity">${
               // ing.quantity ? new Fraction(ing.quantity).toString() : ''
-              ing.quantity
+              ing.quantity ? ing.quantity.toFixed(2).toString() : ''
             }</div>
             <div class="recipe__description">
                 <span class="recipe__unit">${ing.unit}</span>
