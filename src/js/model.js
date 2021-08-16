@@ -9,6 +9,7 @@ export const state = {
     resultsPerPage: RES_PER_PAGE,
     page: 1,
   },
+  bookmarks: [],
 };
 
 /////////////////////////////////////////////////////////////////
@@ -37,6 +38,10 @@ export const loadRecipe = async function (id) {
       ingredients: recipe.ingredients,
     };
 
+    if (state.bookmarks.some((b) => b.id === id))
+      state.recipe.bookmarked = true;
+    else state.recipe.bookmarked = false;
+
     console.log(state.recipe);
   } catch (err) {
     // console.error(`${err} 💥 💥 💥`); // Temp error handling
@@ -46,7 +51,7 @@ export const loadRecipe = async function (id) {
 
 export const loadSearchResults = async function (query) {
   try {
-    state.search.query = query;
+    state.search.query = query; // this is a useful variable to store for future, e.g. analytics
 
     const data = await getJSON(`${API_URL}?search=${query}`);
     console.log(data);
@@ -67,7 +72,7 @@ export const loadSearchResults = async function (query) {
   }
 };
 
-export const getSearchResultsPage = function (pageNum = state.search.page) {
+export const getSearchResultsPage = function (pageNum = 1) {
   state.search.page = pageNum;
 
   const start = (pageNum - 1) * state.search.resultsPerPage;
@@ -84,4 +89,21 @@ export const updateServings = function (newServings) {
 
   // Update Servings in the state
   state.recipe.servings = newServings;
+};
+
+export const addBookmark = function (recipe) {
+  // Add Bookmark
+  state.bookmarks.push(recipe);
+
+  // Mark Current Recipe as Bookmarked
+  if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+};
+
+export const deleteBookmark = function (id) {
+  // Common programming practice: when adding something we pass the whole data, e.g. recipe, but when deleting something, we just pass the id.
+  const index = state.bookmarks.findIndex((el) => el.id === id);
+  state.bookmarks.splice(index, 1);
+
+  // Mark Current Recipe as NOT Bookmarked
+  if (id === state.recipe.id) state.recipe.bookmarked = false;
 };

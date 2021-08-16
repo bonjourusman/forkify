@@ -1,5 +1,5 @@
 import View from './View.js';
-import icons from 'url:../../img/icons.svg';
+import previewView from './previewView.js';
 
 // Child Class of View
 class ResultsView extends View {
@@ -8,30 +8,10 @@ class ResultsView extends View {
   _message = '';
 
   _generateMarkup() {
-    console.log(this._data);
-    return this._data.map(this._generateMarkupPreview).join('');
-  }
-
-  _generateMarkupPreview(result) {
-    // Keep result item highlighted by adding an active class if it has been clicked.
-    const id = window.location.hash.slice(1); // id shown in url
-
-    return `
-        <li class="preview">
-            <a class="preview__link ${
-              result.id === id ? 'preview__link--active' : ''
-            }" href="#${result.id}">
-                <figure class="preview__fig">
-                    <img src="${result.image}" alt="${
-      result.title
-    }" crossorigin/>
-                </figure>
-                <div class="preview__data">
-                    <h4 class="preview__title">${result.title}</h4>
-                    <p class="preview__publisher">${result.publisher}</p>
-                </div>
-            </a>
-        </li>`;
+    // console.log(this._data);
+    return this._data
+      .map((result) => previewView.render(result, false))
+      .join('');
   }
 }
 

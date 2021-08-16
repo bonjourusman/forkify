@@ -3,6 +3,7 @@ import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
+import bookmarksView from './views/bookmarksView.js';
 
 // IMPORTANT
 // Add Polyfills for ES6 features via command line:
@@ -24,8 +25,9 @@ const controlRecipes = async function () {
     const id = window.location.hash;
     if (!id) return; // guard clause
 
-    // 2. UPDATE results view to mark (highlight) selected Search Result
+    // 2. UPDATE RESULTS and BOOKMARK VIEWS to highlight selected Search Result
     resultsView.update(model.getSearchResultsPage());
+    bookmarksView.update(model.state.bookmarks);
 
     // 3. LOAD RECIPE
     recipeView.renderSpinner();
@@ -85,6 +87,19 @@ const controlServings = function (newServings) {
   recipeView.update(model.state.recipe); // only update changed text and attributes in DOM without re-rendering the whole view.
 };
 
+const controlBookmark = function () {
+  // 1. Add or Remove Bookmark
+  if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
+  else model.deleteBookmark(model.state.recipe.id);
+
+  // 2. UPDATE RECIPE VIEW
+  // console.log(model.state.recipe);
+  recipeView.update(model.state.recipe);
+
+  // 3. RENDER BOOKMARKS
+  bookmarksView.render(model.state.bookmarks);
+};
+
 /////////////////////////////////////////////////////////////////
 // Event Listeners
 /////////////////////////////////////////////////////////////////
@@ -95,6 +110,7 @@ const controlServings = function (newServings) {
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
+  recipeView.addHandlerAddBookmark(controlBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
 };

@@ -24,13 +24,16 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
-  render(data) {
+  render(data, render = true) {
     // Return an Error if data is undefined (no data) or if data array is empty
     if (!data || (Array.isArray(data) && data.length === 0))
       return this.renderError();
 
     this._data = data;
     const markup = this._generateMarkup();
+
+    if (!render) return markup;
+
     this._clear(); // clear spinner or prior content from parent element
     this._parentElement.insertAdjacentHTML('afterbegin', markup); // Insert HTML to DOM (add to parent element class: e.g. recipe)
   }
