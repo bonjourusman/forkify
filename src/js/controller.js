@@ -14,9 +14,9 @@ import 'core-js/stable';
 import 'regenerator-runtime';
 
 // Prevent webpage from reloading (Parcel's feature)
-if (module.hot) {
-  module.hot.accept();
-}
+// if (module.hot) {
+//   module.hot.accept();
+// }
 
 // Following functions are Controllers or Handlers that will be attached to Event Listeners
 
@@ -114,7 +114,7 @@ const controlAddRecipe = async function (newRecipe) {
 
     // 1. UPLOAD RECIPE DATA
     await model.uploadRecipe(newRecipe);
-    console.log(model.state.recipe);
+    // console.log(model.state.recipe);
 
     // 2. RENDER RECIPE
     recipeView.render(model.state.recipe);
@@ -139,6 +139,9 @@ const controlAddRecipe = async function (newRecipe) {
   }
 };
 
+const newFeature = function () {
+  console.log('Welcome to Forkify!');
+};
 /////////////////////////////////////////////////////////////////
 // Event Listeners
 /////////////////////////////////////////////////////////////////
@@ -154,5 +157,6 @@ const init = function () {
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
   addRecipeView.addHandlerUpload(controlAddRecipe);
+  newFeature();
 };
 init();

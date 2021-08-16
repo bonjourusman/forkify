@@ -48,7 +48,7 @@ export const loadRecipe = async function (id) {
       state.recipe.bookmarked = true;
     else state.recipe.bookmarked = false;
 
-    console.log(state.recipe);
+    // console.log(state.recipe);
   } catch (err) {
     // console.error(`${err} 💥 💥 💥`); // Temp error handling
     throw err; // This way the promise returned by this function will get REJECTED, and not show as fulfilled.
@@ -60,7 +60,7 @@ export const loadSearchResults = async function (query) {
     state.search.query = query; // this is a useful variable to store for future, e.g. analytics
 
     const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`);
-    console.log(data);
+    // console.log(data);
 
     state.search.results = data.data.recipes.map((recipe) => {
       return {
