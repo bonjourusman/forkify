@@ -32,7 +32,37 @@ export default class View {
     this._data = data;
     const markup = this._generateMarkup();
     this._clear(); // clear spinner or prior content from parent element
-    this._parentElement.insertAdjacentHTML('afterbegin', markup); // Insert HTML to DOM (add to parent element class: recipe)
+    this._parentElement.insertAdjacentHTML('afterbegin', markup); // Insert HTML to DOM (add to parent element class: e.g. recipe)
+  }
+
+  update(data) {
+    this._data = data;
+    const newMarkup = this._generateMarkup();
+
+    // Convert markup string to a DOM object so it can be later used for comparison
+    const newDOM = document.createRange().createContextualFragment(newMarkup);
+    const newElements = Array.from(newDOM.querySelectorAll('*')); // select all elements in the new DOM and place them in an array
+
+    const curElements = Array.from(this._parentElement.querySelectorAll('*')); // select all elements in the old DOM and place them in an array
+
+    // Compare the two set of elements to find the differences
+    newElements.forEach((newEl, i) => {
+      const curEl = curElements[i];
+
+      // Update changed TEXT if the nodes are same AND if their firstChild's nodeValue is not empty (i.e. some text content exists) - Use optional chaining to account for cases when the firstChild might not exist.
+      if (
+        !newEl.isEqualNode(curEl) &&
+        newEl.firstChild?.nodeValue.trim() !== ''
+      ) {
+        curEl.textContent = newEl.textContent;
+      }
+
+      // Update changed ATTRIBUTES if the new element is different from the old one
+      if (!newEl.isEqualNode(curEl))
+        Array.from(newEl.attributes).forEach((attr) =>
+          curEl.setAttribute(attr.name, attr.value)
+        );
+    });
   }
 
   renderError(message = this._errorMessage) {

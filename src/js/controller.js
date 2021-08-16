@@ -11,9 +11,9 @@ import 'core-js/stable';
 import 'regenerator-runtime';
 
 // Prevent webpage from reloading (Parcel's feature)
-// if (module.hot) {
-//   module.hot.accept();
-// }
+if (module.hot) {
+  module.hot.accept();
+}
 
 // Following functions are Controllers or Handlers that will be attached to Event Listeners
 
@@ -24,12 +24,15 @@ const controlRecipes = async function () {
     const id = window.location.hash;
     if (!id) return; // guard clause
 
-    // 1. LOAD RECIPE
+    // 2. UPDATE results view to mark (highlight) selected Search Result
+    resultsView.update(model.getSearchResultsPage());
+
+    // 3. LOAD RECIPE
     recipeView.renderSpinner();
     await model.loadRecipe(id.slice(1)); // as loadRecipe() is an async function, it will return a promise. Thus, we need to add 'await'
     // console.log(model.state.recipe);
 
-    // 2. RENDER RECIPE
+    // 4. RENDER RECIPE
     recipeView.render(model.state.recipe);
   } catch (err) {
     recipeView.renderError();
@@ -78,7 +81,8 @@ const controlServings = function (newServings) {
   model.updateServings(newServings);
 
   // 2. UPDATE RECIPE VIEW
-  recipeView.render(model.state.recipe);
+  // recipeView.render(model.state.recipe); // This results in flickering because with each change in servings, the image is reloaded. Thus, rendering the entire view (all html elements) is not efficient. Use an update method instead:
+  recipeView.update(model.state.recipe); // only update changed text and attributes in DOM without re-rendering the whole view.
 };
 
 /////////////////////////////////////////////////////////////////

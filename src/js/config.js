@@ -7,4 +7,4 @@
 // Naming Convention: Uppercase denotes a constant that will never change
 export const API_URL = 'https://forkify-api.herokuapp.com/api/v2/recipes';
 export const TIMEOUT_SEC = 10;
-export const RES_PER_PAGE = 10; // number of search results per page
+export const RES_PER_PAGE = 15; // number of search results per page
